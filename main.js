@@ -1,8 +1,8 @@
 let data = undefined
-let temp = undefined
 const tableHeaders = ["Icon","Name","Full Name","Powerstats","Race","Gender","Height","Weight","Place Of Birth","Alignment"]
 const heroInfo = ["images.xs","name","biography.fullName","powerstats","appearance.race","appearance.gender","appearance.height","appearance.weight","biography.placeOfBirth","biography.alignment"]
  async function Fetching() {
+    let temp = undefined
     const link = "https://rawcdn.githack.com/akabab/superhero-api/0.2.0/api/all.json"
     await fetch(link)
     .then(async (response) =>{
@@ -12,6 +12,7 @@ const heroInfo = ["images.xs","name","biography.fullName","powerstats","appearan
     .catch((err)=>{
         console.log(err);
     })
+    return temp
 }
 
  function Display() { 
@@ -22,7 +23,7 @@ const heroInfo = ["images.xs","name","biography.fullName","powerstats","appearan
 }
 
 function SetHeros(table) {
-    temp.forEach((hero)=>{
+    data.forEach((hero)=>{
         const tRow = document.createElement("tr")
         table.append(tRow)
         heroInfo.forEach((info)=>{
@@ -57,7 +58,7 @@ function SetHeros(table) {
     })
 }
 
-function filter(){
+function filter(temp){
     document.querySelector("select").addEventListener("change",()=>{
         let val = document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
         if (val === "all"){
@@ -65,9 +66,10 @@ function filter(){
         }else{
             const n = Number(val)
             temp = data.slice(0,n)
-            console.log(temp);
         }
+        Display()
     })
+
 }
 
 function SetHeader(table) {
@@ -81,7 +83,8 @@ function SetHeader(table) {
 } 
 
 
-await Fetching()
-filter()
+data = Fetching()
+let temp = data
+filter(temp)
 Display()
 
